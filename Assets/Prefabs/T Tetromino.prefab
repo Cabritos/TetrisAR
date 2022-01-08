@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationPoint: {x: 0, y: 0, z: 0}
-  _fallTime: 20
+  _fallTime: 0.8
 --- !u!1001 &30938657836902985
 PrefabInstance:
   m_ObjectHideFlags: 0

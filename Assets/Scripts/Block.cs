@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,15 +7,23 @@ public class Block : MonoBehaviour
 {
     [SerializeField] private Vector3 _rotationPoint;
     [SerializeField] private float _fallTime = 0.8f;
+    [SerializeField] private Vector3 _spawnOffset;
     private float _previousTime;
     private static int _gameAreaSize = 7;
+    private static int _gameAreaHeight = 12;
+    private static Transform[,,] _grid = new Transform[_gameAreaSize, _gameAreaHeight, _gameAreaSize];
 
-    
+
     void Update()
     {
         Move();
         Rotate();
         Fall();
+    }
+
+    public Vector3 GetSpawnOffset()
+    {
+        return _spawnOffset;
     }
 
     private void Move()
@@ -40,21 +49,21 @@ public class Block : MonoBehaviour
     private void MoveUp()
     {
         transform.position += new Vector3(0, 0, -1);
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.position -= new Vector3(0, 0, -1);
     }
 
     private void MoveDown()
     {
         transform.position += new Vector3(0, 0, 1);
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.position -= new Vector3(0, 0, 1);
     }
 
     private void MoveRight()
     {
         transform.position += new Vector3(1, 0, 0);
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.position -= new Vector3(1, 0, 0);
     }
 
@@ -62,7 +71,7 @@ public class Block : MonoBehaviour
     {
         transform.position += new Vector3(-1, 0, 0);
 
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.position -= new Vector3(-1, 0, 0);
     }
 
@@ -90,7 +99,7 @@ public class Block : MonoBehaviour
     {
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), 90);
 
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), -90);
     }
 
@@ -98,7 +107,7 @@ public class Block : MonoBehaviour
     {
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), -90);
 
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), 90);
     }
 
@@ -106,7 +115,7 @@ public class Block : MonoBehaviour
     {
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), 90);
 
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), -90);
     }
 
@@ -114,7 +123,7 @@ public class Block : MonoBehaviour
     {
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), -90);
 
-        if (!InsideGrid())
+        if (!ValidMove())
             transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), 90);
     }
 
@@ -124,10 +133,12 @@ public class Block : MonoBehaviour
         {
             transform.position += new Vector3(0, -1, 0);
 
-            if (!InsideGrid())
+            if (!ValidMove())
             {
                 transform.position -= new Vector3(0, -1, 0);
-
+                FindObjectOfType<Spawner>().NewTetramino();
+                AddToGrid();
+                enabled = false;
                 return;
             }
 
@@ -135,22 +146,37 @@ public class Block : MonoBehaviour
         }
     }
     
-    private bool InsideGrid()
+    private bool ValidMove()
     {
         foreach (Transform children in transform)
         {
-            var roundedX = children.transform.position.x;
-            var roundedY = children.transform.position.y;
-            var roundedZ = children.transform.position.z;
+            int x = Mathf.FloorToInt(children.transform.position.x);
+            int y = Mathf.FloorToInt(children.transform.position.y);
+            int z = Mathf.FloorToInt(children.transform.position.z);
 
-            if (roundedX < 0 || roundedX >= _gameAreaSize ||
-                roundedZ < 0 || roundedZ >= _gameAreaSize ||
-                roundedY < 0)
+
+            if (x  < 0 || x >= _gameAreaSize ||
+                z  < 0 || z >= _gameAreaSize ||
+                y < 0) 
             {
                 return false;
             }
-        }
 
+            if (_grid[x, y, z] != null) return false;
+        }
+        
         return true;
+    }
+
+    private void AddToGrid()
+    {
+        foreach (Transform children in transform)
+        {
+            int x = Mathf.FloorToInt(children.transform.position.x);
+            int y = Mathf.FloorToInt(children.transform.position.y);
+            int z = Mathf.FloorToInt(children.transform.position.z);
+
+            _grid[x, y, z] = children;
+        }
     }
 }
