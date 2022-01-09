@@ -2,14 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Block : MonoBehaviour
 {
+    [SerializeField] private GameObject _rotationPointIndicator;
     [SerializeField] private Vector3 _rotationPoint;
     [SerializeField] private float _fallTime = 0.8f;
     [SerializeField] private Vector3 _spawnOffset;
     private float _previousTime;
-    private static int _gameAreaSize = 7;
+    private static int _gameAreaSize = 5;
     private static int _gameAreaHeight = 12;
     private static Transform[,,] _grid = new Transform[_gameAreaSize, _gameAreaHeight, _gameAreaSize];
 
@@ -136,10 +139,15 @@ public class Block : MonoBehaviour
             if (!ValidMove())
             {
                 transform.position -= new Vector3(0, -1, 0);
-                FindObjectOfType<Spawner>().NewTetramino();
+
+                Destroy(_rotationPointIndicator.gameObject);
+
                 AddToGrid();
-                enabled = false;
-                return;
+                CheckForLines();
+                FindObjectOfType<Spawner>().NewTetramino();
+
+                transform.DetachChildren();
+                Destroy(gameObject);
             }
 
             _previousTime = Time.time;
@@ -172,11 +180,71 @@ public class Block : MonoBehaviour
     {
         foreach (Transform children in transform)
         {
+            if (children.GetComponent<Cube>() == null) continue;
+
             int x = Mathf.FloorToInt(children.transform.position.x);
             int y = Mathf.FloorToInt(children.transform.position.y);
             int z = Mathf.FloorToInt(children.transform.position.z);
 
             _grid[x, y, z] = children;
+            
+            children.gameObject.GetComponentInChildren<Text>().text = $"{x},{y},{z}";
+        }
+    }
+
+    private void CheckForLines()
+    {
+        for (int y = _gameAreaHeight - 1; y >= 0; y--)
+        {
+            if (HasLine(y))
+            {
+                DeleteLine(y);
+                RowDown(y);
+            }
+        }
+    }
+
+    private bool HasLine(int y)
+    {
+        for (int x = 0; x < _gameAreaSize; x++)
+        {
+            for (int z = 0; z < _gameAreaSize; z++)
+            {
+                if (_grid[x, y, z] == null)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void DeleteLine(int y)
+    {
+        for (int x = 0; x < _gameAreaSize; x++)
+        {
+            for (int z = 0; z < _gameAreaSize; z++)
+            {
+                Destroy(_grid[x, y, z].gameObject);
+                _grid[x, y, z] = null;
+            }
+        }
+    }
+
+    private void RowDown(int startingRow)
+    {
+        for (int y = startingRow + 1; y < _gameAreaHeight; y++)
+        {
+            for (int x = 0; x < _gameAreaSize; x++)
+            {
+                for (int z = 0; z < _gameAreaSize; z++)
+                {
+                    if (_grid[x, y, z] == null) continue;
+
+                    _grid[x, y, z].gameObject.transform.position -= new Vector3(0, 1, 0);
+                    _grid[x, y - 1, z] = _grid[x, y, z];
+                    _grid[x, y, z] = null;
+                }
+            }
         }
     }
 }

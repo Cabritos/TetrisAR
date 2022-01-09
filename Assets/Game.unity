@@ -242,8 +242,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1099565220}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 6, z: 3.5}
-  m_LocalScale: {x: 7, y: 12, z: 7}
+  m_LocalPosition: {x: 2.5, y: 6, z: 2.5}
+  m_LocalScale: {x: 5, y: 12, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -445,7 +445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2812509525458674498, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2812509525458674498, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: m_LocalPosition.y
@@ -453,7 +453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2812509525458674498, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2812509525458674498, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: m_LocalRotation.w
@@ -483,5 +483,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5953723283044500414, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.data[0]
+      value: 
+      objectReference: {fileID: 3935301552414687812, guid: 8035e36f0777d48488416f3c00d17008, type: 3}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.data[1]
+      value: 
+      objectReference: {fileID: 6117034520080178218, guid: efd4a9aec22317049b3ad59fc83fcbfb, type: 3}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
+      propertyPath: _tetraminos.Array.data[5]
+      value: 
+      objectReference: {fileID: 8989331812708705176, guid: 6fab6b6b779afca47a22e7a8612571af, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
