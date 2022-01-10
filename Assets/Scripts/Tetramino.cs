@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class Block : MonoBehaviour
+public class Tetramino : MonoBehaviour
 {
     [SerializeField] private GameObject _rotationPointIndicator;
     [SerializeField] private Vector3 _rotationPoint;
@@ -14,14 +14,18 @@ public class Block : MonoBehaviour
     private float _previousTime;
     private static int _gameAreaSize = 5;
     private static int _gameAreaHeight = 12;
-    private static Transform[,,] _grid = new Transform[_gameAreaSize, _gameAreaHeight, _gameAreaSize];
-
+    private static Transform[,,] _grid = new Transform[_gameAreaSize + 1, _gameAreaHeight + 3, _gameAreaSize + 1];
 
     void Update()
     {
         Move();
         Rotate();
         Fall();
+    }
+
+    public void SetScale(float scale)
+    {
+        //transform.localScale = new Vector3(scale,scale, scale);
     }
 
     public Vector3 GetSpawnOffset()
@@ -140,12 +144,13 @@ public class Block : MonoBehaviour
             {
                 transform.position -= new Vector3(0, -1, 0);
 
-                Destroy(_rotationPointIndicator.gameObject);
+                    Destroy(_rotationPointIndicator.gameObject);
+                
+                if (ExcedesHeight()) return;
 
                 AddToGrid();
                 CheckForLines();
                 FindObjectOfType<Spawner>().NewTetramino();
-
                 transform.DetachChildren();
                 Destroy(gameObject);
             }
@@ -158,22 +163,38 @@ public class Block : MonoBehaviour
     {
         foreach (Transform children in transform)
         {
-            int x = Mathf.FloorToInt(children.transform.position.x);
-            int y = Mathf.FloorToInt(children.transform.position.y);
-            int z = Mathf.FloorToInt(children.transform.position.z);
+            if (children.GetComponent<Cube>() == null) continue;
 
+            var gridPos = GetGridPosition(children);
+            
+            children.gameObject.GetComponentInChildren<Text>().text = $"{gridPos}";
 
-            if (x  < 0 || x >= _gameAreaSize ||
-                z  < 0 || z >= _gameAreaSize ||
-                y < 0) 
+            if (gridPos.x < 0 || gridPos.x >= _gameAreaSize ||
+                gridPos.z < 0 || gridPos.z >= _gameAreaSize ||
+                gridPos.y < 0) 
             {
                 return false;
             }
 
-            if (_grid[x, y, z] != null) return false;
+            if (_grid[gridPos.x, gridPos.y, gridPos.z] != null) return false;
         }
-        
+
         return true;
+    }
+
+    private bool ExcedesHeight()
+    {
+        foreach (Transform children in transform)
+        {
+            if (Mathf.FloorToInt(children.transform.position.y) < _gameAreaHeight) continue;
+            
+            Debug.LogError("This is endgame");
+            Destroy(FindObjectOfType<Spawner>().gameObject);
+            enabled = false;
+            return true;
+        }
+
+        return false;
     }
 
     private void AddToGrid()
@@ -182,14 +203,26 @@ public class Block : MonoBehaviour
         {
             if (children.GetComponent<Cube>() == null) continue;
 
-            int x = Mathf.FloorToInt(children.transform.position.x);
-            int y = Mathf.FloorToInt(children.transform.position.y);
-            int z = Mathf.FloorToInt(children.transform.position.z);
-
-            _grid[x, y, z] = children;
-            
-            children.gameObject.GetComponentInChildren<Text>().text = $"{x},{y},{z}";
+            var gridPos = GetGridPosition(children);
+            _grid[gridPos.x, gridPos.y, gridPos.z] = children;
         }
+    }
+
+    private Vector3Int GetGridPosition(Transform gameObject)
+    {
+        var x = Mathf.FloorToInt(gameObject.transform.position.x);
+        var y = Mathf.FloorToInt(gameObject.transform.position.y);
+        var z = Mathf.FloorToInt(gameObject.transform.position.z);
+
+        var parX = Mathf.FloorToInt(transform.parent.transform.position.x);
+        var parY = Mathf.FloorToInt(transform.parent.transform.position.y);
+        var parZ = Mathf.FloorToInt(transform.parent.transform.position.z);
+
+        Debug.Log($"floor transform children: {x}, {y}, {z}");
+        Debug.Log($"floor transform parent: {parX}, {parY}, {parZ}");
+        Debug.Log($"valor grilla: {x - parX}, {y - parY}, {z - parZ}");
+
+        return new Vector3Int(x - parX - 1, y - parY + 2, z - parZ - 1);
     }
 
     private void CheckForLines()

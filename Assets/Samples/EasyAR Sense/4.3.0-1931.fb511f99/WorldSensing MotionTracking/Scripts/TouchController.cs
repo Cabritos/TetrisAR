@@ -90,11 +90,15 @@ namespace Common
                             GetRelativeTouch(touch1Delta + touch2Delta, out xMov, out yMov);
                             if (xMov.sqrMagnitude > yMov.sqrMagnitude)
                             {
+                                /*
+                                Rotación a dos dedos deshabilitada
+
                                 curGesture = GestureControl.TwoRotate;
                                 if (isTwoFingerRotatable)
                                 {
                                     StartCoroutine(OnTwoRotate());
                                 }
+                                */
                             }
                             else
                             {
