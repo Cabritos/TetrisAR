@@ -712,6 +712,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[0]
+      value: 
+      objectReference: {fileID: 3935301552414687812, guid: 8035e36f0777d48488416f3c00d17008, type: 3}
     - target: {fileID: 5510119285223134105, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: m_Name
       value: Game
@@ -722,15 +730,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7008389400688752145, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 7008389400688752145, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7008389400688752145, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.5
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 7008389400688752145, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: m_LocalRotation.w

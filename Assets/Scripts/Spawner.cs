@@ -16,8 +16,6 @@ public class Spawner : MonoBehaviour
             transform.position + tetramino.GetComponent<Tetramino>().GetSpawnOffset(),
             transform.rotation,
             _gameCointainer.transform);
-
-        //tetramino.GetComponent<Tetramino>().SetScale(_gameCointainer.transform.localScale.x); 
     }
 
     public void StartGame()
