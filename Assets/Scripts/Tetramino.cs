@@ -16,12 +16,28 @@ public class Tetramino : MonoBehaviour
     private static int _gameAreaHeight = 12;
     private static Transform[,,] _grid = new Transform[_gameAreaSize + 1, _gameAreaHeight + 2, _gameAreaSize +1];
 
+    public bool _moveUp = false;
+    public bool _moveDown = false;
+    public bool _moveLeft = false;
+    public bool _moveRight = false;
+
+    public bool _rotateUp = false;
+    public bool _rotateDown = false;
+    public bool _rotateLeft = false;
+    public bool _rotateRight = false;
+
+    private Spawner _spawner;
+
+    void Start()
+    {
+        _spawner = FindObjectOfType<Spawner>();
+    }
+
     void Update()
     {
         Move();
         Rotate();
         Fall();
-        UpdateCubesPositionsDisplay();
     }
 
     public Vector3 GetSpawnOffset()
@@ -31,61 +47,66 @@ public class Tetramino : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || _moveLeft)
         {
             MoveLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || _moveRight)
         {
             MoveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            MoveDown();
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || _moveUp)
         {
             MoveUp();
         }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || _moveDown)
+        {
+            MoveDown();
+        }
     }
 
-    private void UpdateCubesPositionsDisplay()
+    public void UpdateCubesPositionsDisplay()
     {
+        if (transform.childCount == 0) return;
+
         foreach (Transform children in transform)
         {
-            if (children.GetComponent<Cube>() == null) continue;
-            var gridPos = GetGridPosition(children);
-            children.gameObject.GetComponentInChildren<Text>().text = $"{gridPos}";
+            var cube = children.GetComponent<Cube>();
+
+            if (cube != null) cube.UpdatePositionText();
         }
     }
 
     private void MoveUp()
     {
-        transform.position += new Vector3(0, 0, -1);
+        _moveUp = false;
+        transform.localPosition += new Vector3(0, 0, 1);
         if (!ValidMove())
-            transform.position -= new Vector3(0, 0, -1);
+            transform.localPosition -= new Vector3(0, 0, 1);
     }
 
     private void MoveDown()
     {
-        transform.position += new Vector3(0, 0, 1);
+        _moveDown = false;
+        transform.localPosition += new Vector3(0, 0, -1);
         if (!ValidMove())
-            transform.position -= new Vector3(0, 0, 1);
+            transform.localPosition -= new Vector3(0, 0, -1);
     }
 
     private void MoveRight()
     {
-        transform.position += new Vector3(1, 0, 0);
+        _moveRight = false;
+        transform.localPosition += new Vector3(1, 0, 0);
         if (!ValidMove())
-            transform.position -= new Vector3(1, 0, 0);
+            transform.localPosition -= new Vector3(1, 0, 0);
     }
 
     private void MoveLeft()
     {
-        transform.position += new Vector3(-1, 0, 0);
-
+        _moveLeft = false;
+        transform.localPosition += new Vector3(-1, 0, 0);
         if (!ValidMove())
-            transform.position -= new Vector3(-1, 0, 0);
+            transform.localPosition -= new Vector3(-1, 0, 0);
     }
 
     private void Rotate()
@@ -110,6 +131,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateLeft()
     {
+        _rotateLeft = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), 90);
 
         if (!ValidMove())
@@ -118,6 +140,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateRight()
     {
+        _rotateRight = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), -90);
 
         if (!ValidMove())
@@ -126,6 +149,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateUp()
     {
+        _rotateUp = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), 90);
 
         if (!ValidMove())
@@ -134,30 +158,32 @@ public class Tetramino : MonoBehaviour
 
     private void RotateDown()
     {
+        _rotateDown = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), -90);
 
         if (!ValidMove())
             transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), 90);
     }
 
-    private void Fall()
+    public void Fall()
     {
         if (Time.time - _previousTime > (Input.GetKey(KeyCode.RightControl) ? _fallTime / 10 : _fallTime))
         {
-            transform.position += new Vector3(0, -1, 0);
+            transform.localPosition += new Vector3(0, -1, 0);
+            UpdateCubesPositionsDisplay();
 
             if (!ValidMove())
             {
-                transform.position += new Vector3(0, +1, 0);
-
-                    Destroy(_rotationPointIndicator.gameObject);
+                transform.localPosition += new Vector3(0, 1, 0);
+                Destroy(_rotationPointIndicator.gameObject);
                 
                 if (ExcedesHeight()) return;
 
                 AddToGrid();
+                UpdateCubesPositionsDisplay();
                 CheckForLines();
-                FindObjectOfType<Spawner>().NewTetramino();
-                transform.DetachChildren();
+                _spawner.NewTetramino();
+                CallSocialServices();
                 Destroy(gameObject);
             }
 
@@ -169,13 +195,15 @@ public class Tetramino : MonoBehaviour
     {
         foreach (Transform children in transform)
         {
-            if (children.GetComponent<Cube>() == null) continue;
+            var cube = children.GetComponent<Cube>();
 
-            var gridPos = GetGridPosition(children);
+            if (cube == null) continue;
+
+            var gridPos = cube.GetGridPosition();
             
             if (gridPos.x < 0 || gridPos.x >= _gameAreaSize ||
                 gridPos.z < 0 || gridPos.z >= _gameAreaSize ||
-                gridPos.y <= 0) 
+                gridPos.y < 0) 
             {
                 return false;
             }
@@ -190,10 +218,14 @@ public class Tetramino : MonoBehaviour
     {
         foreach (Transform children in transform)
         {
-            if (GetGridPosition(children).y < _gameAreaHeight) continue;
+            var cube = children.GetComponent<Cube>();
+
+            if (cube == null) continue;
+            
+            if (cube.GetGridPosition().y < _gameAreaHeight) continue;
             
             Debug.LogError("This is endgame");
-            Destroy(FindObjectOfType<Spawner>().gameObject);
+            Destroy(_spawner.gameObject);
             enabled = false;
             return true;
         }
@@ -205,28 +237,13 @@ public class Tetramino : MonoBehaviour
     {
         foreach (Transform children in transform)
         {
-            if (children.GetComponent<Cube>() == null) continue;
+            var cube = children.GetComponent<Cube>();
 
-            var gridPos = GetGridPosition(children);
+            if (cube == null) continue;
+
+            var gridPos = cube.GetGridPosition();
             _grid[gridPos.x, gridPos.y, gridPos.z] = children;
         }
-    }
-
-    private Vector3Int GetGridPosition(Transform gameObject)
-    {
-        var x = Mathf.FloorToInt(gameObject.transform.position.x);
-        var y = Mathf.FloorToInt(gameObject.transform.position.y);
-        var z = Mathf.FloorToInt(gameObject.transform.position.z);
-
-        var parX = Mathf.FloorToInt(transform.parent.transform.position.x);
-        var parY = Mathf.FloorToInt(transform.parent.transform.position.y);
-        var parZ = Mathf.FloorToInt(transform.parent.transform.position.z);
-
-        Debug.Log($"floor transform children: {x}, {y}, {z}");
-        Debug.Log($"floor transform parent: {parX}, {parY}, {parZ}");
-        Debug.Log($"grid value: {x - parX}, {y - parY}, {z - parZ}");
-
-        return new Vector3Int(x - parX - 1, y - parY + 1, z - parZ - 1);
     }
 
     private void CheckForLines()
@@ -277,11 +294,23 @@ public class Tetramino : MonoBehaviour
                 {
                     if (_grid[x, y, z] == null) continue;
 
-                    _grid[x, y, z].gameObject.transform.position -= new Vector3(0, 1, 0);
+                    _grid[x, y, z].gameObject.GetComponent<Cube>().MoveDown();
                     _grid[x, y - 1, z] = _grid[x, y, z];
                     _grid[x, y, z] = null;
                 }
             }
+        }
+    }
+
+    private void CallSocialServices()
+    {
+        transform.DetachChildren();
+        return;
+
+        //this is the real intention, buts its buggy as it is
+        foreach (Transform child in transform)
+        {
+            child.SetParent(_spawner.Cubes, true);
         }
     }
 }

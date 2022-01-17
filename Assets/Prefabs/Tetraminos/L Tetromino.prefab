@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationPointIndicator: {fileID: 7687304195851214450}
   _rotationPoint: {x: 0, y: 0, z: 0}
-  _fallTime: 0.8
+  _fallTime: 1
   _spawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1001 &2203081991331928332
 PrefabInstance:

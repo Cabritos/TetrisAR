@@ -688,23 +688,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2132895951 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5510119285223134105, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
-  m_PrefabInstance: {fileID: 7908605384382401263}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2132895953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2132895951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 895e6d2a042eb1742b0cf54ba7fb23e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7908605384382401263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -714,12 +697,36 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: _tetraminos.Array.size
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: _tetraminos.Array.data[0]
       value: 
+      objectReference: {fileID: 525875888389095341, guid: b57685aa080e31d48969b7b89b3b723d, type: 3}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[1]
+      value: 
+      objectReference: {fileID: 3252353708529425511, guid: aab0ecd9016ef1344807ac22570ec56d, type: 3}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[2]
+      value: 
       objectReference: {fileID: 3935301552414687812, guid: 8035e36f0777d48488416f3c00d17008, type: 3}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[3]
+      value: 
+      objectReference: {fileID: 6444013339447687120, guid: 60b11cc03fe8262438719a5ed25c2f66, type: 3}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[4]
+      value: 
+      objectReference: {fileID: 6117034520080178218, guid: efd4a9aec22317049b3ad59fc83fcbfb, type: 3}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[5]
+      value: 
+      objectReference: {fileID: 8989331812708705176, guid: 6fab6b6b779afca47a22e7a8612571af, type: 3}
+    - target: {fileID: 3878732857987710632, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
+      propertyPath: _tetraminos.Array.data[6]
+      value: 
+      objectReference: {fileID: 1455625333450845782, guid: bbc59d272f3ee7f4699bb83bca16c6a9, type: 3}
     - target: {fileID: 5510119285223134105, guid: 5429a59b164a6f84eb1a09c5022bd12e, type: 3}
       propertyPath: m_Name
       value: Game

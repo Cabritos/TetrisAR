@@ -327,11 +327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e70640c45cf46b4c8143eb95923d806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 8984290998997165322, guid: 0ee6dec87766791449e8124703fc1222, type: 3}
   Temp: {fileID: 0}
   Session: {fileID: 0}
   Camera: {fileID: 963194227}
-  vioCamera: {fileID: 0}
+  tracker: {fileID: 0}
+  done: 0
 --- !u!1001 &1438943090
 PrefabInstance:
   m_ObjectHideFlags: 0
