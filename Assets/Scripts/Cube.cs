@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Cube : MonoBehaviour
 {
-    static Spawner Spawner;
+    static Game Game;
     private Text _text;
 
     static float Size;
 
     void Awake()
     {
-        Spawner = FindObjectOfType<Spawner>();
+        Game = FindObjectOfType<Game>();
         _text = GetComponentInChildren<Text>();
 
         Size = transform.lossyScale.x;
@@ -21,12 +21,12 @@ public class Cube : MonoBehaviour
     public Vector3Int GetGridPosition()
     {
         var result = new Vector3Int(
-            Mathf.FloorToInt((transform.position.x - Spawner.CeroCoord.position.x) / Spawner.Length),
-            Mathf.FloorToInt((transform.position.y - Spawner.CeroCoord.position.y) / Spawner.Height),
-            Mathf.FloorToInt((transform.position.z - Spawner.CeroCoord.position.z) / Spawner.Depth)
+            Mathf.FloorToInt((transform.position.x - Game.GetCeroCoord().position.x) / Game.Length),
+            Mathf.FloorToInt((transform.position.y - Game.GetCeroCoord().position.y) / Game.Height),
+            Mathf.FloorToInt((transform.position.z - Game.GetCeroCoord().position.z) / Game.Depth)
         );
 
-        //Debug.Log(result);
+        Debug.Log(result);
         return result;
     }
 

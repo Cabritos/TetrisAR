@@ -4,25 +4,17 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _gameCointainer;
+    private Game _game;
+    private InputManager _inputManager;
     [SerializeField] private GameObject[] _tetraminos;
-
-    [SerializeField] public Transform CeroCoord;
-    [SerializeField] public Transform EndCoord;
     [SerializeField] public Transform Cubes;
 
     public Tetramino ActiveTetramino { get; private set; }
-    public float Length { get; private set; }
-    public float Height { get; private set; }
-    public float Depth { get; private set; }
 
-    private bool _hasStarted;
-
-    void Update()
+    void Awake()
     {
-        Length = (EndCoord.position.x - CeroCoord.position.x) / 5;
-        Height = (EndCoord.position.y - CeroCoord.position.y) / 12;
-        Depth = (EndCoord.position.z - CeroCoord.position.z) / 5;
+        _game = FindObjectOfType<Game>();
+        _inputManager = FindObjectOfType<InputManager>();
     }
 
     public void NewTetramino()
@@ -32,19 +24,11 @@ public class Spawner : MonoBehaviour
         var newTetramino = Instantiate(tetraminoPrefab,
             transform.position,
             transform.rotation,
-            _gameCointainer.transform);
+            _game.gameObject.transform);
 
         ActiveTetramino = newTetramino.GetComponent<Tetramino>();
-        ActiveTetramino.transform.localPosition += ActiveTetramino.GetSpawnOffset();
+        ActiveTetramino.gameObject.transform.localPosition += ActiveTetramino.GetSpawnOffset();
         ActiveTetramino.UpdateCubesPositionsDisplay();
-    }
-
-    public void StartGame()
-    {
-        if (_hasStarted == false)
-        {
-            _hasStarted = true;
-            NewTetramino();
-        }
+        _inputManager.SetActiveTetramino(ActiveTetramino);
     }
 }

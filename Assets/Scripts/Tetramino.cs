@@ -11,26 +11,32 @@ public class Tetramino : MonoBehaviour
     [SerializeField] private Vector3 _rotationPoint;
     [SerializeField] private float _fallTime = 0.8f;
     [SerializeField] private Vector3 _spawnOffset;
+
     private float _previousTime;
-    private static int _gameAreaSize = 5;
-    private static int _gameAreaHeight = 12;
-    private static Transform[,,] _grid = new Transform[_gameAreaSize + 1, _gameAreaHeight + 2, _gameAreaSize +1];
+    private static int _gameAreaSize;
+    private static int _gameAreaHeight;
+    private static Transform[,,] _grid = new Transform[6, 14, 6];
 
-    public bool _moveUp = false;
-    public bool _moveDown = false;
-    public bool _moveLeft = false;
-    public bool _moveRight = false;
+    public bool MoveUpFlag;
+    public bool MoveDownFlag;
+    public bool MoveLeftFlag;
+    public bool MoveRightFlag;
 
-    public bool _rotateUp = false;
-    public bool _rotateDown = false;
-    public bool _rotateLeft = false;
-    public bool _rotateRight = false;
+    public bool RotateUpFlag;
+    public bool RotateDownFlag;
+    public bool RotateLeftFlag;
+    public bool RotateRightFlag;
 
+    private Game _game;
     private Spawner _spawner;
 
-    void Start()
+    void Awake()
     {
+        _game = FindObjectOfType<Game>();
         _spawner = FindObjectOfType<Spawner>();
+
+        _gameAreaSize = _game.GetGameArea().x;
+        _gameAreaHeight = _game.GetGameArea().y;
     }
 
     void Update()
@@ -47,19 +53,19 @@ public class Tetramino : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || _moveLeft)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || MoveLeftFlag)
         {
             MoveLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || _moveRight)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || MoveRightFlag)
         {
             MoveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || _moveUp)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || MoveUpFlag)
         {
             MoveUp();
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || _moveDown)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || MoveDownFlag)
         {
             MoveDown();
         }
@@ -79,7 +85,7 @@ public class Tetramino : MonoBehaviour
 
     private void MoveUp()
     {
-        _moveUp = false;
+        MoveUpFlag = false;
         transform.localPosition += new Vector3(0, 0, 1);
         if (!ValidMove())
             transform.localPosition -= new Vector3(0, 0, 1);
@@ -87,7 +93,7 @@ public class Tetramino : MonoBehaviour
 
     private void MoveDown()
     {
-        _moveDown = false;
+        MoveDownFlag = false;
         transform.localPosition += new Vector3(0, 0, -1);
         if (!ValidMove())
             transform.localPosition -= new Vector3(0, 0, -1);
@@ -95,7 +101,7 @@ public class Tetramino : MonoBehaviour
 
     private void MoveRight()
     {
-        _moveRight = false;
+        MoveRightFlag = false;
         transform.localPosition += new Vector3(1, 0, 0);
         if (!ValidMove())
             transform.localPosition -= new Vector3(1, 0, 0);
@@ -103,7 +109,7 @@ public class Tetramino : MonoBehaviour
 
     private void MoveLeft()
     {
-        _moveLeft = false;
+        MoveLeftFlag = false;
         transform.localPosition += new Vector3(-1, 0, 0);
         if (!ValidMove())
             transform.localPosition -= new Vector3(-1, 0, 0);
@@ -111,19 +117,19 @@ public class Tetramino : MonoBehaviour
 
     private void Rotate()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) || RotateLeftFlag)
         {
             RotateLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) || RotateRightFlag)
         {
             RotateRight();
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W) || RotateUpFlag)
         {
             RotateUp();
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) || RotateDownFlag)
         {
             RotateDown();
         }
@@ -131,7 +137,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateLeft()
     {
-        _rotateLeft = false;
+        RotateLeftFlag = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), 90);
 
         if (!ValidMove())
@@ -140,7 +146,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateRight()
     {
-        _rotateRight = false;
+        RotateRightFlag = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(0, 0, 1), -90);
 
         if (!ValidMove())
@@ -149,7 +155,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateUp()
     {
-        _rotateUp = false;
+        RotateUpFlag = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), 90);
 
         if (!ValidMove())
@@ -158,7 +164,7 @@ public class Tetramino : MonoBehaviour
 
     private void RotateDown()
     {
-        _rotateDown = false;
+        RotateDownFlag = false;
         transform.RotateAround(transform.TransformPoint(_rotationPoint), new Vector3(1, 0, 0), -90);
 
         if (!ValidMove())
@@ -193,6 +199,8 @@ public class Tetramino : MonoBehaviour
     
     private bool ValidMove()
     {
+        Debug.Log("Valid call");
+
         foreach (Transform children in transform)
         {
             var cube = children.GetComponent<Cube>();
@@ -200,17 +208,27 @@ public class Tetramino : MonoBehaviour
             if (cube == null) continue;
 
             var gridPos = cube.GetGridPosition();
-            
+
+            Debug.Log(_gameAreaSize);
+            Debug.Log(_gameAreaHeight);
+
             if (gridPos.x < 0 || gridPos.x >= _gameAreaSize ||
                 gridPos.z < 0 || gridPos.z >= _gameAreaSize ||
                 gridPos.y < 0) 
             {
+                Debug.LogWarning("Fuera de grilla");
                 return false;
             }
 
-            if (_grid[gridPos.x, gridPos.y, gridPos.z] != null) return false;
+            if (_grid[gridPos.x, gridPos.y, gridPos.z] != null)
+            {
+                Debug.Log(_grid[gridPos.x, gridPos.y, gridPos.z]);
+                Debug.LogWarning("Ocupado");
+                return false;
+            }
         }
 
+        Debug.LogWarning("Válido");
         return true;
     }
 
