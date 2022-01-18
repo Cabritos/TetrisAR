@@ -45,7 +45,7 @@ public class InputManager : MonoBehaviour
     public void RotateUp()
     {
         if (!_game.HasStarted) return;
-        _activeTetramino.MoveUpFlag = true;
+        _activeTetramino.RotateUpFlag = true;
     }
 
     public void RotateDown()
@@ -64,5 +64,11 @@ public class InputManager : MonoBehaviour
     {
         if (!_game.HasStarted) return;
         _activeTetramino.RotateRightFlag = true;
+    }
+
+    public void HardFall()
+    {
+        if (!_game.HasStarted) return;
+        _activeTetramino.HardFallFlag = true;
     }
 }

@@ -51,6 +51,16 @@ MonoBehaviour:
   _rotationPoint: {x: -1, y: 0, z: 0}
   _fallTime: 1
   _spawnOffset: {x: 1, y: 0, z: 0}
+  _cubeMaterial: {fileID: 2100000, guid: ea6bab278ab4d2042b31280dd87fd11e, type: 2}
+  MoveUpFlag: 0
+  MoveDownFlag: 0
+  MoveLeftFlag: 0
+  MoveRightFlag: 0
+  HardFallFlag: 0
+  RotateUpFlag: 0
+  RotateDownFlag: 0
+  RotateLeftFlag: 0
+  RotateRightFlag: 0
 --- !u!1001 &3860267438806857125
 PrefabInstance:
   m_ObjectHideFlags: 0

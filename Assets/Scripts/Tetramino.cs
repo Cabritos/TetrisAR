@@ -11,6 +11,7 @@ public class Tetramino : MonoBehaviour
     [SerializeField] private Vector3 _rotationPoint;
     [SerializeField] private float _fallTime = 0.8f;
     [SerializeField] private Vector3 _spawnOffset;
+    [SerializeField] private Material _cubeMaterial;
 
     private float _previousTime;
     private static int _gameAreaSize;
@@ -21,6 +22,8 @@ public class Tetramino : MonoBehaviour
     public bool MoveDownFlag;
     public bool MoveLeftFlag;
     public bool MoveRightFlag;
+
+    public bool HardFallFlag;
 
     public bool RotateUpFlag;
     public bool RotateDownFlag;
@@ -173,7 +176,7 @@ public class Tetramino : MonoBehaviour
 
     public void Fall()
     {
-        if (Time.time - _previousTime > (Input.GetKey(KeyCode.RightControl) ? _fallTime / 10 : _fallTime))
+        if (Time.time - _previousTime > ((Input.GetKey(KeyCode.RightControl) || HardFallFlag) ? _fallTime / 10 : _fallTime))
         {
             transform.localPosition += new Vector3(0, -1, 0);
             UpdateCubesPositionsDisplay();
@@ -193,6 +196,7 @@ public class Tetramino : MonoBehaviour
                 Destroy(gameObject);
             }
 
+            HardFallFlag = false;
             _previousTime = Time.time;
         }
     }
@@ -322,6 +326,13 @@ public class Tetramino : MonoBehaviour
 
     private void CallSocialServices()
     {
+        foreach (Transform child in transform)
+        {
+            Material[] materials = child.gameObject.GetComponent<MeshRenderer>().materials;
+            materials[0] = _cubeMaterial;
+            child.gameObject.GetComponent<MeshRenderer>().materials = materials;
+        }
+
         transform.DetachChildren();
         return;
 

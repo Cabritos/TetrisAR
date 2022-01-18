@@ -223,6 +223,8 @@ namespace Common
 
         private IEnumerator OnTwoRotate()
         {
+            yield break;
+
             Vector3 xMovement;
             Vector3 yMovement;
             Quaternion rawRotation = controlTarget.rotation;

@@ -39,6 +39,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7008389400688752145}
+  - component: {fileID: 1514393827}
+  - component: {fileID: 1514393828}
   m_Layer: 0
   m_Name: Game Cointainer
   m_TagString: Untagged
@@ -63,6 +65,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1514393827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5510119285223134105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff20aee141a1de4e877b45cf733e498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1514393828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5510119285223134105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f0af173accbe7498facd4ecd99f068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameArea: {fileID: 7908605385463874123}
+  CeroCoord: {fileID: 7908605384340188245}
+  EndCoord: {fileID: 6549786076253945467}
 --- !u!1 &6413607843760794789
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,32 +335,33 @@ PrefabInstance:
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[0]
       value: 
-      objectReference: {fileID: 3252353708529425511, guid: aab0ecd9016ef1344807ac22570ec56d, type: 3}
+      objectReference: {fileID: 525875888389095341, guid: b57685aa080e31d48969b7b89b3b723d, type: 3}
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[1]
       value: 
-      objectReference: {fileID: 3935301552414687812, guid: 8035e36f0777d48488416f3c00d17008, type: 3}
+      objectReference: {fileID: 3252353708529425511, guid: aab0ecd9016ef1344807ac22570ec56d, type: 3}
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[2]
       value: 
-      objectReference: {fileID: 6444013339447687120, guid: 60b11cc03fe8262438719a5ed25c2f66, type: 3}
+      objectReference: {fileID: 3935301552414687812, guid: 8035e36f0777d48488416f3c00d17008, type: 3}
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[3]
       value: 
-      objectReference: {fileID: 6117034520080178218, guid: efd4a9aec22317049b3ad59fc83fcbfb, type: 3}
+      objectReference: {fileID: 6444013339447687120, guid: 60b11cc03fe8262438719a5ed25c2f66, type: 3}
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[4]
       value: 
-      objectReference: {fileID: 8989331812708705176, guid: 6fab6b6b779afca47a22e7a8612571af, type: 3}
+      objectReference: {fileID: 6117034520080178218, guid: efd4a9aec22317049b3ad59fc83fcbfb, type: 3}
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[5]
       value: 
-      objectReference: {fileID: 1455625333450845782, guid: bbc59d272f3ee7f4699bb83bca16c6a9, type: 3}
+      objectReference: {fileID: 8989331812708705176, guid: 6fab6b6b779afca47a22e7a8612571af, type: 3}
     - target: {fileID: 8068978558141267436, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
       propertyPath: _tetraminos.Array.data[6]
       value: 
-      objectReference: {fileID: 525875888389095341, guid: b57685aa080e31d48969b7b89b3b723d, type: 3}
-    m_RemovedComponents: []
+      objectReference: {fileID: 1455625333450845782, guid: bbc59d272f3ee7f4699bb83bca16c6a9, type: 3}
+    m_RemovedComponents:
+    - {fileID: 5953723283044500414, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8f1ffacd55f9c3947bd2b5b29f898936, type: 3}
 --- !u!4 &9018116613469315078 stripped
 Transform:
